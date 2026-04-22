@@ -78,7 +78,7 @@
             transform: translate(-120%, 0);
             padding: 15px 30px;
             font-family: 'Baloo 2', sans-serif;
-            font-size: 20px;
+            font-size: 16px;
             font-weight: 700;
             cursor: pointer;
             border: 4px solid #000;
@@ -223,8 +223,8 @@
         noBtn.addEventListener('mouseover', () => {
             noBtn.style.transform = 'none'; 
             
-            const btnWidth = noBtn.offsetWidth*0.9;
-            const btnHeight = noBtn.offsetHeight*0.9;
+            const btnWidth = noBtn.offsetWidth;
+            const btnHeight = noBtn.offsetHeight;
             const yesRect = yesBtn.getBoundingClientRect();
             
             let randomX, randomY;
