@@ -3,150 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Little Surprise</title>
+    <title>A Little Surprise V2</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        body {
+        body, html {
             margin: 0;
             padding: 0;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #e3f2fd;
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        /* Màn hình chính */
+        #main-ui {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-color: #e3f2fd; /* Màu nền xanh nhạt như trong ảnh */
-            font-family: 'Press Start 2P', cursive;
-            overflow: hidden;
-            text-align: center;
+            height: 100vh;
+            transition: opacity 1s ease;
         }
 
-        .container {
-            position: relative;
-            z-index: 10;
-        }
+        .hearts { color: #c62828; font-size: 30px; margin-bottom: 20px; }
+        h1 { color: #b71c1c; font-size: 3rem; margin: 10px 0; }
+        .question { color: #b71c1c; font-size: 14px; line-height: 1.8; margin-bottom: 40px; text-align: center; }
 
-        .hearts {
-            color: #c62828;
-            font-size: 30px;
-            margin-bottom: 20px;
-        }
-
-        h1 {
-            color: #b71c1c;
-            font-size: 3rem;
-            margin: 10px 0;
-            text-transform: uppercase;
-        }
-
-        p {
-            color: #b71c1c;
-            font-size: 14px;
-            line-height: 1.5;
-            margin-bottom: 40px;
-        }
-
-        .buttons {
-            display: flex;
-            gap: 50px;
-            justify-content: center;
-            align-items: center;
-        }
-
+        .btn-container { display: flex; gap: 40px; height: 60px; align-items: center; }
+        
         button {
             padding: 15px 30px;
             font-family: 'Press Start 2P', cursive;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
             border: 4px solid #000;
             background-color: #bdbdbd;
             box-shadow: inset -4px -4px 0px #757575, inset 4px 4px 0px #eeeeee;
+            z-index: 100;
         }
 
-        button:active {
-            box-shadow: inset 4px 4px 0px #757575;
-        }
+        #no-btn { transition: all 0.1s ease; }
 
-        #no-btn {
-            position: absolute;
-            transition: 0.1s;
-        }
-
-        /* Trang trí pixel ở góc */
-        .pixel-decor {
-            position: absolute;
-            color: #b71c1c;
-            font-size: 40px;
-        }
-
-        #lyric-container {
+        /* Màn hình Credits */
+        #credits-screen {
             display: none;
-            margin-top: 30px;
-            color: #2e7d32;
-            font-size: 12px;
-            max-width: 80%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            color: #fff;
+            z-index: 999;
         }
+
+        .credits-container {
+            position: absolute;
+            width: 100%;
+            bottom: -100%; /* Bắt đầu từ dưới màn hình */
+            text-align: center;
+            animation: scroll-up 20s linear forwards;
+        }
+
+        .credits-container h2 { color: #ffeb3b; margin-bottom: 50px; font-size: 24px; }
+        .credits-container p { margin: 20px 0; font-size: 14px; line-height: 2; }
+
+        @keyframes scroll-up {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-300%); } /* Cuộn lên trên hết text */
+        }
+
+        .pixel-decor { position: absolute; color: #b71c1c; font-size: 30px; pointer-events: none; }
     </style>
 </head>
 <body>
 
-    <div class="pixel-decor" style="top: 10%; left: 10%;">✦</div>
-    <div class="pixel-decor" style="top: 20%; left: 8%;">✦</div>
-    <div class="pixel-decor" style="bottom: 15%; left: 12%;">✦</div>
-    <div class="pixel-decor" style="top: 50%; right: 5%;">✦</div>
-
-    <div class="container">
+    <div id="main-ui">
+        <div class="pixel-decor" style="top: 10%; left: 10%;">✦</div>
+        <div class="pixel-decor" style="bottom: 15%; right: 10%;">✦</div>
+        
         <div class="hearts">♥♥♥♥♥</div>
         <h1>HI, LOVE!</h1>
-        <p>DO YOU WANT TO SEE A LITTLE<br>SURPRISE I MADE FOR YOU?</p>
+        <div class="question">DO YOU WANT TO SEE A LITTLE<br>SURPRISE I MADE FOR YOU?</div>
 
-        <div class="buttons">
-            <button id="yes-btn">Yes</button>
-            <button id="no-btn">No</button>
-        </div>
-
-        <div id="lyric-container">
-            <p>🎶 Đang phát bản nhạc tình yêu của bạn... 🎶</p>
-            <div id="lyrics"></div>
+        <div class="btn-container">
+            <button id="yes-btn">YES</button>
+            <button id="no-btn">NO</button>
         </div>
     </div>
 
-    <audio id="love-audio">
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
+    <div id="credits-screen">
+        <div class="credits-container">
+            <h2>SPECIAL THANKS TO YOU</h2>
+            <p>YOU ARE THE BEST THING</p>
+            <p>THAT EVER HAPPENED TO ME</p>
+            <p>--- LYRICS ---</p>
+            <p>I found a love for me</p>
+            <p>Darling, just dive right in</p>
+            <p>And follow my lead</p>
+            <p>I found a girl, beautiful and sweet</p>
+            <p>I never knew you were the someone</p>
+            <p>Waiting for me...</p>
+            <p>❤️</p>
+            <p>CREATED BY KHANG</p>
+        </div>
+    </div>
 
     <script>
         const noBtn = document.getElementById('no-btn');
         const yesBtn = document.getElementById('yes-btn');
-        const audio = document.getElementById('love-audio');
-        const lyricContainer = document.getElementById('lyric-container');
+        const mainUi = document.getElementById('main-ui');
+        const credits = document.getElementById('credits-screen');
 
-        // Hàm di chuyển nút NO ngẫu nhiên
+        // Logic nút NO chạy trốn
         noBtn.addEventListener('mouseover', () => {
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-            
-            noBtn.style.left = `${x}px`;
-            noBtn.style.top = `${y}px`;
+            const padding = 50;
+            const btnWidth = noBtn.offsetWidth;
+            const btnHeight = noBtn.offsetHeight;
+
+            // Tính toán giới hạn màn hình
+            const maxX = window.innerWidth - btnWidth - padding;
+            const maxY = window.innerHeight - btnHeight - padding;
+
+            let randomX, randomY;
+            const centerWidth = 500; // Vùng chữ ở giữa cần tránh
+            const centerHeight = 400;
+
+            // Vòng lặp để tìm vị trí không đè lên chữ
+            do {
+                randomX = Math.floor(Math.random() * maxX) + padding;
+                randomY = Math.floor(Math.random() * maxY) + padding;
+            } while (
+                randomX > (window.innerWidth/2 - centerWidth/2) && 
+                randomX < (window.innerWidth/2 + centerWidth/2) &&
+                randomY > (window.innerHeight/2 - centerHeight/2) &&
+                randomY < (window.innerHeight/2 + centerHeight/2)
+            );
+
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
         });
 
-        // Khi nhấn nút YES
+        // Logic khi nhấn YES
         yesBtn.addEventListener('click', () => {
-            alert('Yay! I love you! ❤️');
-            noBtn.style.display = 'none';
-            lyricContainer.style.display = 'block';
-            audio.play();
-            
-            // Giả lập chạy lyric
-            const lyrics = ["You are my sunshine...", "My only sunshine...", "You make me happy...", "When skies are gray..."];
-            let i = 0;
-            const lyricBox = document.getElementById('lyrics');
-            
-            setInterval(() => {
-                if(i < lyrics.length) {
-                    lyricBox.innerHTML = `<p style="color: #d32f2f">${lyrics[i]}</p>`;
-                    i++;
-                }
-            }, 3000);
+            mainUi.style.opacity = '0';
+            setTimeout(() => {
+                mainUi.style.display = 'none';
+                credits.style.display = 'block';
+                // Bạn có thể thêm lệnh phát nhạc ở đây:
+                // new Audio('link_nhac.mp3').play();
+            }, 1000);
         });
     </script>
 </body>
