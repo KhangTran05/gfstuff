@@ -35,7 +35,7 @@
 
         h1 { 
             color: var(--text-color); 
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             padding: 0 10px;
             margin: 5px 0; 
             text-transform: uppercase; 
@@ -86,7 +86,7 @@
 
         .btn-style {
             position: fixed;
-            top: 65%;
+            top: 75vh; /* Đẩy xuống 75% chiều cao màn hình để không đè chữ */
             padding: 12px 25px;
             font-family: 'Baloo 2', sans-serif; 
             font-size: 18px;
@@ -110,7 +110,7 @@
         /* Dùng PX thay vì % để chính xác tuyệt đối trên mọi thiết bị */
         @keyframes scrollAnimation {
             0% { transform: translateY(0); }
-            100% { transform: translateY(-3800px); } 
+            100% { transform: translateY(-4000px); } 
         }
 
         /* Responsive quãng đường cuộn cho máy tính (nếu cần) */
@@ -222,10 +222,19 @@
         const spacer = document.getElementById('spacer');
 
         function moveButton() {
-            const maxX = window.innerWidth - noBtn.offsetWidth;
-            const maxY = window.innerHeight - noBtn.offsetHeight;
-            noBtn.style.left = `${Math.random() * maxX}px`;
-            noBtn.style.top = `${Math.random() * maxY}px`;
+            const btnWidth = noBtn.offsetWidth;
+            const btnHeight = noBtn.offsetHeight;
+            
+            // Giới hạn vùng nhảy chỉ ở nửa dưới màn hình để tránh đè chữ
+            const minY = window.innerHeight * 0.5; 
+            const maxY = window.innerHeight - btnHeight - 20;
+            const maxX = window.innerWidth - btnWidth - 20;
+            
+            let randomX = Math.random() * maxX;
+            let randomY = minY + Math.random() * (maxY - minY);
+            
+            noBtn.style.left = `${randomX}px`;
+            noBtn.style.top = `${randomY}px`;
         }
 
         noBtn.addEventListener('mouseover', moveButton);
