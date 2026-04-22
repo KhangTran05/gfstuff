@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hi Love - Giao diện lãng mạn Minecraft</title>
+    <style>
+        /* Nhúng phông chữ pixel (Press Start 2P) */
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f3f2f0;
+            font-family: 'Press Start 2P', cursive;
+            image-rendering: pixelated; /* Giữ hiệu ứng pixel */
+        }
+
+        .container {
+            width: 512px;
+            max-width: 512px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 24px;
+            position: relative;
+        }
+
+        /* Phần đầu thư */
+        .header {
+            border-bottom: 1px solid #e0dfdd;
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: middle;
+        }
+
+        .company-name {
+            color: #5257DE;
+            font-size: 22px;
+            font-weight: bold;
+            letter-spacing: -0.5px;
+        }
+
+        .user-name {
+            color: #282828;
+            font-size: 14px;
+        }
+
+        /* Nội dung thư */
+        p {
+            margin: 0 0 16px 0;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #191919;
+        }
+
+        .greeting {
+            font-weight: 400;
+        }
+
+        /* Mã OTP */
+        .otp-code {
+            margin: 0 0 24px 0;
+            font-weight: 500;
+            font-size: 36px;
+            color: #191919;
+        }
+
+        /* Trái tim pixel và chi tiết yêu cầu */
+        .pixel-heart {
+            color: #ff0000;
+            font-size: 20px;
+        }
+
+        .request-details {
+            margin: 0 0 8px 0;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #191919;
+        }
+
+        .request-info {
+            margin: 0;
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #666666;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #f3f2f0;
+            padding: 16px 24px;
+            text-align: center;
+            font-size: 12px;
+            color: #666666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <span class="company-name">CompanyName</span>
+            <span class="user-name">User name</span>
+        </div>
+
+        <p class="greeting">Hello,</p>
+        <p>Enter this 6-digit code to verify it's you.</p>
+        
+        <h1 class="otp-code"><strong>{otp_code}</strong></h1>
+        
+        <p>If you didn't request this code, we recommend checking your account security or contacting the administrator.</p>
+        <p>Thanks for helping us keep your account secure.</p>
+        <p>The Khang Tran Team</p>
+
+        <p class="pixel-heart">♥♥♥♥♥</p>
+
+        <p class="request-details"><strong>Request details:</strong></p>
+        <p class="request-info">
+            <strong>Date:</strong> {date}<br>
+            <strong>Operating System:</strong> {os}<br>
+            <strong>Browser:</strong> {browser}<br>
+            <strong>IP Address:</strong> {ip}
+        </p>
+
+        <div class="footer">
+            © 2026 Khang Tran Workspace. This email was sent automatically from noreply@khang-tran.net.
+        </div>
+    </div>
+</body>
+</html>
