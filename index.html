@@ -3,138 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hi Love - Giao diện lãng mạn Minecraft</title>
+    <title>A Little Surprise</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        /* Nhúng phông chữ pixel (Press Start 2P) */
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
         body {
             margin: 0;
             padding: 0;
+            height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: #f3f2f0;
+            background-color: #e3f2fd; /* Màu nền xanh nhạt như trong ảnh */
             font-family: 'Press Start 2P', cursive;
-            image-rendering: pixelated; /* Giữ hiệu ứng pixel */
+            overflow: hidden;
+            text-align: center;
         }
 
         .container {
-            width: 512px;
-            max-width: 512px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            padding: 24px;
             position: relative;
+            z-index: 10;
         }
 
-        /* Phần đầu thư */
-        .header {
-            border-bottom: 1px solid #e0dfdd;
-            padding-bottom: 16px;
-            margin-bottom: 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: middle;
+        .hearts {
+            color: #c62828;
+            font-size: 30px;
+            margin-bottom: 20px;
         }
 
-        .company-name {
-            color: #5257DE;
-            font-size: 22px;
-            font-weight: bold;
-            letter-spacing: -0.5px;
+        h1 {
+            color: #b71c1c;
+            font-size: 3rem;
+            margin: 10px 0;
+            text-transform: uppercase;
         }
 
-        .user-name {
-            color: #282828;
-            font-size: 14px;
-        }
-
-        /* Nội dung thư */
         p {
-            margin: 0 0 16px 0;
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 1.5;
-            color: #191919;
-        }
-
-        .greeting {
-            font-weight: 400;
-        }
-
-        /* Mã OTP */
-        .otp-code {
-            margin: 0 0 24px 0;
-            font-weight: 500;
-            font-size: 36px;
-            color: #191919;
-        }
-
-        /* Trái tim pixel và chi tiết yêu cầu */
-        .pixel-heart {
-            color: #ff0000;
-            font-size: 20px;
-        }
-
-        .request-details {
-            margin: 0 0 8px 0;
-            font-weight: 400;
+            color: #b71c1c;
             font-size: 14px;
             line-height: 1.5;
-            color: #191919;
+            margin-bottom: 40px;
         }
 
-        .request-info {
-            margin: 0;
-            font-weight: 400;
-            font-size: 12px;
-            line-height: 1.5;
-            color: #666666;
+        .buttons {
+            display: flex;
+            gap: 50px;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* Footer */
-        .footer {
-            background-color: #f3f2f0;
-            padding: 16px 24px;
-            text-align: center;
+        button {
+            padding: 15px 30px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            cursor: pointer;
+            border: 4px solid #000;
+            background-color: #bdbdbd;
+            box-shadow: inset -4px -4px 0px #757575, inset 4px 4px 0px #eeeeee;
+        }
+
+        button:active {
+            box-shadow: inset 4px 4px 0px #757575;
+        }
+
+        #no-btn {
+            position: absolute;
+            transition: 0.1s;
+        }
+
+        /* Trang trí pixel ở góc */
+        .pixel-decor {
+            position: absolute;
+            color: #b71c1c;
+            font-size: 40px;
+        }
+
+        #lyric-container {
+            display: none;
+            margin-top: 30px;
+            color: #2e7d32;
             font-size: 12px;
-            color: #666666;
+            max-width: 80%;
         }
     </style>
 </head>
 <body>
+
+    <div class="pixel-decor" style="top: 10%; left: 10%;">✦</div>
+    <div class="pixel-decor" style="top: 20%; left: 8%;">✦</div>
+    <div class="pixel-decor" style="bottom: 15%; left: 12%;">✦</div>
+    <div class="pixel-decor" style="top: 50%; right: 5%;">✦</div>
+
     <div class="container">
-        <div class="header">
-            <span class="company-name">CompanyName</span>
-            <span class="user-name">User name</span>
+        <div class="hearts">♥♥♥♥♥</div>
+        <h1>HI, LOVE!</h1>
+        <p>DO YOU WANT TO SEE A LITTLE<br>SURPRISE I MADE FOR YOU?</p>
+
+        <div class="buttons">
+            <button id="yes-btn">Yes</button>
+            <button id="no-btn">No</button>
         </div>
 
-        <p class="greeting">Hello,</p>
-        <p>Enter this 6-digit code to verify it's you.</p>
-        
-        <h1 class="otp-code"><strong>{otp_code}</strong></h1>
-        
-        <p>If you didn't request this code, we recommend checking your account security or contacting the administrator.</p>
-        <p>Thanks for helping us keep your account secure.</p>
-        <p>The Khang Tran Team</p>
-
-        <p class="pixel-heart">♥♥♥♥♥</p>
-
-        <p class="request-details"><strong>Request details:</strong></p>
-        <p class="request-info">
-            <strong>Date:</strong> {date}<br>
-            <strong>Operating System:</strong> {os}<br>
-            <strong>Browser:</strong> {browser}<br>
-            <strong>IP Address:</strong> {ip}
-        </p>
-
-        <div class="footer">
-            © 2026 Khang Tran Workspace. This email was sent automatically from noreply@khang-tran.net.
+        <div id="lyric-container">
+            <p>🎶 Đang phát bản nhạc tình yêu của bạn... 🎶</p>
+            <div id="lyrics"></div>
         </div>
     </div>
+
+    <audio id="love-audio">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const noBtn = document.getElementById('no-btn');
+        const yesBtn = document.getElementById('yes-btn');
+        const audio = document.getElementById('love-audio');
+        const lyricContainer = document.getElementById('lyric-container');
+
+        // Hàm di chuyển nút NO ngẫu nhiên
+        noBtn.addEventListener('mouseover', () => {
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            
+            noBtn.style.left = `${x}px`;
+            noBtn.style.top = `${y}px`;
+        });
+
+        // Khi nhấn nút YES
+        yesBtn.addEventListener('click', () => {
+            alert('Yay! I love you! ❤️');
+            noBtn.style.display = 'none';
+            lyricContainer.style.display = 'block';
+            audio.play();
+            
+            // Giả lập chạy lyric
+            const lyrics = ["You are my sunshine...", "My only sunshine...", "You make me happy...", "When skies are gray..."];
+            let i = 0;
+            const lyricBox = document.getElementById('lyrics');
+            
+            setInterval(() => {
+                if(i < lyrics.length) {
+                    lyricBox.innerHTML = `<p style="color: #d32f2f">${lyrics[i]}</p>`;
+                    i++;
+                }
+            }, 3000);
+        });
+    </script>
 </body>
 </html>
