@@ -110,7 +110,7 @@
 
         @keyframes scrollAnimation {
             0% { transform: translateY(0); }
-            100% { transform: translateY(-70%); }
+            100% { transform: translateY(-82%); }
         }
 
         .pixel-decor { position: fixed; color: var(--secondary-color); font-size: 30px; pointer-events: none; z-index: 500;}
@@ -259,6 +259,16 @@
             music.play();
 
             scrollWrapper.classList.add('scrolling');
+        });
+        scrollWrapper.addEventListener('animationiteration', () => {
+            const intro = document.querySelector('.intro-section');
+            if (intro) {
+                intro.remove(); 
+                
+                scrollWrapper.style.animation = 'none';
+                scrollWrapper.offsetHeight;
+                scrollWrapper.style.animation = 'scrollAnimation 191s linear infinite';
+            }
         });
     </script>
 </body>
