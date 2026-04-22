@@ -3,36 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Little Surprise V2</title>
+    <title>A Little Surprise</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-color: #e3f2fd;
+            --text-color: #b71c1c;
+            --secondary-color: #c62828;
+        }
+
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #e3f2fd;
+            background-color: var(--bg-color);
             font-family: 'Press Start 2P', cursive;
         }
 
-        /* Màn hình chính */
-        #main-ui {
+        /* Container chứa toàn bộ chữ để cuộn */
+        #scroll-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            /* Ẩn ban đầu, chỉ hiển thị sau khi bấm Yes */
+        }
+
+        /* Phần câu hỏi ban đầu */
+        .intro-section {
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            transition: opacity 1s ease;
+            text-align: center;
         }
 
-        .hearts { color: #c62828; font-size: 30px; margin-bottom: 20px; }
-        h1 { color: #b71c1c; font-size: 3rem; margin: 10px 0; }
-        .question { color: #b71c1c; font-size: 14px; line-height: 1.8; margin-bottom: 40px; text-align: center; }
+        .hearts { color: var(--secondary-color); font-size: 30px; margin-bottom: 20px; }
+        h1 { color: var(--text-color); font-size: 2.5rem; margin: 10px 0; text-transform: uppercase; }
+        .question { color: var(--text-color); font-size: 14px; line-height: 1.8; margin-bottom: 20px; }
 
-        .btn-container { display: flex; gap: 40px; height: 60px; align-items: center; }
-        
-        button {
+        /* Phần Lyrics */
+        .lyrics-section {
+            text-align: center;
+            padding-top: 50px;
+            padding-bottom: 100vh; /* Tạo khoảng trống để cuộn hết chữ ra khỏi màn hình */
+        }
+
+        .lyric-line {
+            color: var(--text-color);
+            font-size: 12px;
+            line-height: 2.5;
+            margin: 10px 0;
+        }
+
+        /* Nút bấm thiết lập cố định hoàn toàn độc lập */
+        #yes-btn {
+            position: fixed;
+            top: 60%;
+            left: 50%;
+            transform: translate(-120%, 0); /* Đẩy nút sang trái một chút */
             padding: 15px 30px;
             font-family: 'Press Start 2P', cursive;
             font-size: 16px;
@@ -40,121 +72,189 @@
             border: 4px solid #000;
             background-color: #bdbdbd;
             box-shadow: inset -4px -4px 0px #757575, inset 4px 4px 0px #eeeeee;
-            z-index: 100;
+            z-index: 1000;
         }
 
-        #no-btn { transition: all 0.1s ease; }
-
-        /* Màn hình Credits */
-        #credits-screen {
-            display: none;
+        #no-btn {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-            color: #fff;
-            z-index: 999;
+            top: 60%;
+            left: 50%;
+            transform: translate(20%, 0); /* Đẩy nút sang phải một chút */
+            padding: 15px 30px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 16px;
+            cursor: pointer;
+            border: 4px solid #000;
+            background-color: #bdbdbd;
+            box-shadow: inset -4px -4px 0px #757575, inset 4px 4px 0px #eeeeee;
+            z-index: 1000;
+            transition: left 0.1s ease, top 0.1s ease;
         }
 
-        .credits-container {
-            position: absolute;
-            width: 100%;
-            bottom: -100%; /* Bắt đầu từ dưới màn hình */
-            text-align: center;
-            animation: scroll-up 20s linear forwards;
+        /* Hiệu ứng cuộn lặp vô tận (Loop) */
+        .scrolling {
+            animation: scrollAnimation 100s linear infinite; /* Thời gian cuộn 100 giây, bạn có thể chỉnh nhanh chậm ở đây */
         }
 
-        .credits-container h2 { color: #ffeb3b; margin-bottom: 50px; font-size: 24px; }
-        .credits-container p { margin: 20px 0; font-size: 14px; line-height: 2; }
-
-        @keyframes scroll-up {
+        @keyframes scrollAnimation {
             0% { transform: translateY(0); }
-            100% { transform: translateY(-300%); } /* Cuộn lên trên hết text */
+            100% { transform: translateY(-100%); } /* Cuộn toàn bộ wrapper lên trên */
         }
 
-        .pixel-decor { position: absolute; color: #b71c1c; font-size: 30px; pointer-events: none; }
+        .pixel-decor { position: fixed; color: var(--secondary-color); font-size: 30px; pointer-events: none; z-index: 500;}
     </style>
 </head>
 <body>
 
-    <div id="main-ui">
-        <div class="pixel-decor" style="top: 10%; left: 10%;">✦</div>
-        <div class="pixel-decor" style="bottom: 15%; right: 10%;">✦</div>
-        
-        <div class="hearts">♥♥♥♥♥</div>
-        <h1>HI, LOVE!</h1>
-        <div class="question">DO YOU WANT TO SEE A LITTLE<br>SURPRISE I MADE FOR YOU?</div>
+    <div class="pixel-decor" style="top: 10%; left: 10%;">✦</div>
+    <div class="pixel-decor" style="bottom: 15%; right: 10%;">✦</div>
 
-        <div class="btn-container">
-            <button id="yes-btn">YES</button>
-            <button id="no-btn">NO</button>
+    <div id="scroll-wrapper">
+        <div class="intro-section">
+            <div class="hearts">♥♥♥♥♥</div>
+            <h1>HI, LOVE!</h1>
+            <div class="question">
+                DO YOU WANT TO SEE A LITTLE<br>
+                SURPRISE I MADE FOR YOU?
+            </div>
+        </div>
+
+        <div class="lyrics-section">
+            <div class="lyric-line">--- LYRICS ---</div>
+            <div class="lyric-line">Em lặng im còn anh thì ngồi ngẩn ngơ nhìn khuôn mặt ngây thơ đó</div>
+            <div class="lyric-line">Em hững hờ quá nên anh lo sợ bơ vơ</div>
+            <div class="lyric-line">Đợi chờ đôi mắt ngoan em ngại ngùng ngó sang</div>
+            <div class="lyric-line">Anh thẫn thờ, bơ phờ, đôi mắt mơ</div>
+            <div class="lyric-line">Anh đã cố đổi thay để mạnh mẽ hơn vì anh sợ cô đơn</div>
+            <div class="lyric-line">Nói yêu má hồng, mắt cong, bờ môi mọng rất khó</div>
+            <div class="lyric-line">Vì lo trong trái tim em đã có ai</div>
+            <div class="lyric-line">Nhưng nếu yêu em là sai thì anh đây không cần đúng</div>
+            <div class="lyric-line">Người yêu ơi, yêu mình anh được không?</div>
+            <div class="lyric-line">Từ giờ và sau này xua lạnh hơi đêm mùa đông</div>
+            <div class="lyric-line">Là ngày ta xum vầy</div>
+            <div class="lyric-line">Khỏa lấp con tim hao gầy</div>
+            <div class="lyric-line">Lấp trống tình yêu đong đầy</div>
+            <div class="lyric-line">Hãy để anh chứng minh cho em thấy</div>
+            <div class="lyric-line">Người yêu ơi, yêu thì có gì sai? (Đâu có sai đâu)</div>
+            <div class="lyric-line">Không là anh thì ai?</div>
+            <div class="lyric-line">Để anh đưa em về</div>
+            <div class="lyric-line">Là tình yêu mãi mê</div>
+            <div class="lyric-line">Mặc kệ người ta cười chê</div>
+            <div class="lyric-line">Bởi vì tình yêu là thế</div>
+            <div class="lyric-line">Làm người yêu anh nhé, baby</div>
+            <div class="lyric-line">Rồi làm vợ anh nhé, baby</div>
+            <div class="lyric-line">Làm người yêu anh nhé, baby</div>
+            <div class="lyric-line">Rồi làm vợ anh nhé, baby, no, no, no</div>
+            <div class="lyric-line">Không hiểu, không hiểu, không hiểu, không hiểu, không hiểu</div>
+            <div class="lyric-line">Gặp em tự nhiên trái tim nằm bên trái nhảy sang bên phải</div>
+            <div class="lyric-line">Phép toán có thể tính một cộng một bằng hai</div>
+            <div class="lyric-line">Anh cộng em thì bằng ba là sai</div>
+            <div class="lyric-line">Nhưng tương lai nó sẽ đúng nếu như ta (yêu nhau mãi)</div>
+            <div class="lyric-line">Bàn phím máy tính chơi nhiều (cũng chai)</div>
+            <div class="lyric-line">Hoa đẹp đến mấy cũng có ngày (tàn phai)</div>
+            <div class="lyric-line">Yêu xong chia tay, ai cũng sợ hãi</div>
+            <div class="lyric-line">Tình yêu anh trao em nó rất dai và rất dài</div>
+            <div class="lyric-line">Anh đã cố đổi thay để mạnh mẽ hơn vì anh sợ cô đơn</div>
+            <div class="lyric-line">Nói yêu má hồng, mắt cong, bờ môi mọng rất khó</div>
+            <div class="lyric-line">Vì lo trong trái tim em đã có ai</div>
+            <div class="lyric-line">Nhưng nếu yêu em là sai thì anh đây không cần đúng</div>
+            <div class="lyric-line">Người yêu ơi, yêu mình anh được không?</div>
+            <div class="lyric-line">Từ giờ và sau này xua lạnh hơi đêm mùa đông</div>
+            <div class="lyric-line">Là ngày ta xum vầy</div>
+            <div class="lyric-line">Khỏa lấp con tim hao gầy</div>
+            <div class="lyric-line">Lấp trống tình yêu đong đầy</div>
+            <div class="lyric-line">Hãy để anh chứng minh cho em thấy</div>
+            <div class="lyric-line">Người yêu ơi, yêu thì có gì sai? (Đâu có sai đâu)</div>
+            <div class="lyric-line">Không là anh thì ai?</div>
+            <div class="lyric-line">Để anh đưa em về</div>
+            <div class="lyric-line">Là tình yêu mãi mê</div>
+            <div class="lyric-line">Mặc kệ người ta cười chê</div>
+            <div class="lyric-line">Bởi vì tình yêu là thế</div>
+            <div class="lyric-line">Làm người yêu anh nhé, baby</div>
+            <div class="lyric-line">Anh đã cố đổi thay để mạnh mẽ hơn vì anh sợ cô đơn</div>
+            <div class="lyric-line">Là khi những nỗi nhớ như sóng xô nơi đây từng cơn</div>
+            <div class="lyric-line">Là khi em cười đùa bên ai đau đớn nên anh giận hờn</div>
+            <div class="lyric-line">Nhưng yêu em là sai thì anh đây không cần đúng</div>
+            <div class="lyric-line">Người yêu ơi, yêu mình anh được không?</div>
+            <div class="lyric-line">Từ giờ và sau này xua lạnh hơi đêm mùa đông</div>
+            <div class="lyric-line">Là ngày ta xum vầy</div>
+            <div class="lyric-line">Khỏa lấp con tim hao gầy</div>
+            <div class="lyric-line">Lấp trống tình yêu đong đầy</div>
+            <div class="lyric-line">Hãy để anh chứng minh cho em thấy</div>
+            <div class="lyric-line">Người yêu ơi, yêu thì có gì sai? (Đâu có sai đâu)</div>
+            <div class="lyric-line">Không là anh thì ai?</div>
+            <div class="lyric-line">Để anh đưa em về</div>
+            <div class="lyric-line">Là tình yêu mãi mê</div>
+            <div class="lyric-line">Mặc kệ người ta cười chê</div>
+            <div class="lyric-line">Bởi vì tình yêu là thế</div>
+            <div class="lyric-line">Làm người yêu anh nhé, baby</div>
+            <div class="lyric-line">Rồi làm vợ anh nhé, baby</div>
+            <div class="lyric-line">Làm người yêu anh nhé, baby</div>
+            <div class="lyric-line">Rồi làm vợ anh nhé, baby, no, no, no</div>
+            <div class="lyric-line">Ý em sao, ý em sao?</div>
+            <br><br><br><br>
         </div>
     </div>
 
-    <div id="credits-screen">
-        <div class="credits-container">
-            <h2>SPECIAL THANKS TO YOU</h2>
-            <p>YOU ARE THE BEST THING</p>
-            <p>THAT EVER HAPPENED TO ME</p>
-            <p>--- LYRICS ---</p>
-            <p>I found a love for me</p>
-            <p>Darling, just dive right in</p>
-            <p>And follow my lead</p>
-            <p>I found a girl, beautiful and sweet</p>
-            <p>I never knew you were the someone</p>
-            <p>Waiting for me...</p>
-            <p>❤️</p>
-            <p>CREATED BY KHANG</p>
-        </div>
-    </div>
+    <button id="yes-btn">Yes</button>
+    <button id="no-btn">No</button>
+
+    <audio id="bg-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
         const noBtn = document.getElementById('no-btn');
         const yesBtn = document.getElementById('yes-btn');
-        const mainUi = document.getElementById('main-ui');
-        const credits = document.getElementById('credits-screen');
+        const scrollWrapper = document.getElementById('scroll-wrapper');
+        const music = document.getElementById('bg-music');
 
-        // Logic nút NO chạy trốn
+        // Logic nút NO nhảy ngẫu nhiên (hoàn toàn không ảnh hưởng nút YES)
         noBtn.addEventListener('mouseover', () => {
-            const padding = 50;
+            // Xóa transform ban đầu để nút chạy tự do theo left/top
+            noBtn.style.transform = 'none'; 
+            
             const btnWidth = noBtn.offsetWidth;
             const btnHeight = noBtn.offsetHeight;
-
-            // Tính toán giới hạn màn hình
-            const maxX = window.innerWidth - btnWidth - padding;
-            const maxY = window.innerHeight - btnHeight - padding;
-
+            const yesRect = yesBtn.getBoundingClientRect();
+            
             let randomX, randomY;
-            const centerWidth = 500; // Vùng chữ ở giữa cần tránh
-            const centerHeight = 400;
-
-            // Vòng lặp để tìm vị trí không đè lên chữ
-            do {
-                randomX = Math.floor(Math.random() * maxX) + padding;
-                randomY = Math.floor(Math.random() * maxY) + padding;
-            } while (
-                randomX > (window.innerWidth/2 - centerWidth/2) && 
-                randomX < (window.innerWidth/2 + centerWidth/2) &&
-                randomY > (window.innerHeight/2 - centerHeight/2) &&
-                randomY < (window.innerHeight/2 + centerHeight/2)
-            );
-
-            noBtn.style.position = 'fixed';
-            noBtn.style.left = randomX + 'px';
-            noBtn.style.top = randomY + 'px';
+            let isOverlapping = true;
+            
+            // Tìm vị trí mới cho nút No, đảm bảo không đè lên nút Yes
+            while(isOverlapping) {
+                randomX = Math.random() * (window.innerWidth - btnWidth);
+                randomY = Math.random() * (window.innerHeight - btnHeight);
+                
+                // Giữ khoảng cách an toàn với nút Yes (20px)
+                const padding = 20;
+                if (
+                    randomX < yesRect.right + padding &&
+                    randomX + btnWidth > yesRect.left - padding &&
+                    randomY < yesRect.bottom + padding &&
+                    randomY + btnHeight > yesRect.top - padding
+                ) {
+                    isOverlapping = true; // Bị đè, phải tìm tọa độ khác
+                } else {
+                    isOverlapping = false; // Tọa độ an toàn
+                }
+            }
+            
+            noBtn.style.left = `${randomX}px`;
+            noBtn.style.top = `${randomY}px`;
         });
 
-        // Logic khi nhấn YES
+        // Khi nhấn YES
         yesBtn.addEventListener('click', () => {
-            mainUi.style.opacity = '0';
-            setTimeout(() => {
-                mainUi.style.display = 'none';
-                credits.style.display = 'block';
-                // Bạn có thể thêm lệnh phát nhạc ở đây:
-                // new Audio('link_nhac.mp3').play();
-            }, 1000);
+            // Ẩn 2 nút đi
+            noBtn.style.display = 'none';
+            yesBtn.style.display = 'none';
+
+            // Phát nhạc (thuộc tính loop trong thẻ audio sẽ tự động lặp lại khi hết bài)
+            music.play();
+
+            // Kích hoạt hiệu ứng kéo chữ lên
+            scrollWrapper.classList.add('scrolling');
         });
     </script>
 </body>
