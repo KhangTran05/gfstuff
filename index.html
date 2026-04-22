@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MIOOOO</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐽</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&family=Press+Start+2P&display=swap" rel="stylesheet">
@@ -20,31 +20,10 @@
             height: 100%;
             overflow: hidden;
             background-color: var(--bg-color);
-            font-family: 'Baloo 2', sans-serif; 
-        }
-
-        h1 { 
-            color: var(--text-color); 
-            font-size: 2rem;
-            margin: 5px 0; 
-            text-transform: uppercase; 
-            font-family: 'Press Start 2P', cursive; 
-        }
-
-        .question { 
-            color: var(--text-color); 
-            font-size: 30px;
-            font-weight: 700;
-            line-height: 1.8; 
-            margin-bottom: 15px; 
-        }
-
-        .lyric-line {
-            color: var(--text-color);
-            font-size: 30px;
-            font-weight: 500;
-            line-height: 2.5;
-            margin: 10px 0;
+            font-family: 'Baloo 2', sans-serif;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         #scroll-wrapper {
@@ -52,7 +31,42 @@
             top: 0;
             left: 0;
             width: 100%;
+            will-change: transform;
         }
+
+        /* Responsive cho tiêu đề */
+        h1 { 
+            color: var(--text-color); 
+            font-size: 1.5rem;
+            padding: 0 10px;
+            margin: 5px 0; 
+            text-transform: uppercase; 
+            font-family: 'Press Start 2P', cursive; 
+        }
+        @media (min-width: 768px) { h1 { font-size: 2.5rem; } }
+
+        /* Responsive cho câu hỏi */
+        .question { 
+            color: var(--text-color); 
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.6; 
+            margin-bottom: 15px; 
+            padding: 0 20px;
+        }
+        @media (min-width: 768px) { .question { font-size: 28px; } }
+
+        /* Responsive cho lyrics - CỰC KỲ QUAN TRỌNG để khớp nhịp */
+        .lyric-line {
+            color: var(--text-color);
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 2.2;
+            margin: 8px 0;
+            padding: 0 15px;
+            word-wrap: break-word;
+        }
+        @media (min-width: 768px) { .lyric-line { font-size: 24px; } }
 
         .intro-section {
             height: 100vh;
@@ -61,10 +75,10 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding-bottom: 200px;
+            padding-bottom: 100px;
         }
 
-        .hearts { color: var(--secondary-color); font-size: 30px; margin-bottom: 20px; }
+        .hearts { color: var(--secondary-color); font-size: 24px; margin-bottom: 15px; }
 
         .lyrics-section {
             text-align: center;
@@ -72,48 +86,44 @@
             padding-bottom: 100vh;
         }
 
-        #yes-btn {
+        /* Nút bấm cố định */
+        .btn-style {
             position: fixed;
-            top: 60%;
-            left: 50%;
-            transform: translate(-120%, 0);
-            padding: 15px 30px;
+            top: 65%;
+            padding: 12px 25px;
             font-family: 'Baloo 2', sans-serif; 
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 700;
             cursor: pointer;
             border: 4px solid #000;
             background-color: #bdbdbd;
             box-shadow: inset -4px -4px 0px #757575, inset 4px 4px 0px #eeeeee;
             z-index: 1000;
+            touch-action: manipulation;
+        }
+
+        #yes-btn {
+            left: 50%;
+            transform: translateX(-110%);
         }
 
         #no-btn {
-            position: fixed;
-            top: 60%;
             left: 50%;
-            transform: translate(20%, 0);
-            padding: 15px 30px;
-            font-family: 'Baloo 2', sans-serif; 
-            font-size: 16px;
-            cursor: pointer;
-            border: 4px solid #000;
-            background-color: #bdbdbd;
-            box-shadow: inset -4px -4px 0px #757575, inset 4px 4px 0px #eeeeee;
-            z-index: 1000;
-            transition: left 0.1s ease, top 0.1s ease;
+            transform: translateX(10%);
+            transition: left 0.15s ease, top 0.15s ease;
         }
 
+        /* Animation cuộn */
         .scrolling {
             animation: scrollAnimation 191s linear infinite;
         }
 
         @keyframes scrollAnimation {
             0% { transform: translateY(0); }
-            100% { transform: translateY(-70%); }
+            100% { transform: translateY(-85%); } /* Tăng lên để khớp nhịp trên mobile */
         }
 
-        .pixel-decor { position: fixed; color: var(--secondary-color); font-size: 30px; pointer-events: none; z-index: 500;}
+        .pixel-decor { position: fixed; color: var(--secondary-color); font-size: 25px; pointer-events: none; z-index: 500;}
     </style>
 </head>
 <body>
@@ -132,6 +142,7 @@
         </div>
 
         <div class="lyrics-section">
+            <div class="lyric-line">--- BẮT ĐẦU ---</div>
             <div class="lyric-line">Em lặng im còn anh thì ngồi ngẩn ngơ nhìn khuôn mặt ngây thơ đó</div>
             <div class="lyric-line">Em hững hờ quá nên anh lo sợ bơ vơ</div>
             <div class="lyric-line">Đợi chờ đôi mắt ngoan em ngại ngùng ngó sang</div>
@@ -207,10 +218,10 @@
         </div>
     </div>
 
-    <button id="yes-btn">Dạaa</button>
-    <button id="no-btn">Ừ</button>
+    <button id="yes-btn" class="btn-style">Dạaa</button>
+    <button id="no-btn" class="btn-style">Ừ</button>
 
-    <audio id="bg-music" loop>
+    <audio id="bg-music" loop preload="auto">
         <source src="LamNguoiYeuAnhNheBaby.mp3" type="audio/mpeg">
     </audio>
 
@@ -220,9 +231,7 @@
         const scrollWrapper = document.getElementById('scroll-wrapper');
         const music = document.getElementById('bg-music');
 
-        noBtn.addEventListener('mouseover', () => {
-            noBtn.style.transform = 'none'; 
-            
+        function moveButton() {
             const btnWidth = noBtn.offsetWidth;
             const btnHeight = noBtn.offsetHeight;
             const yesRect = yesBtn.getBoundingClientRect();
@@ -234,36 +243,39 @@
                 randomX = Math.random() * (window.innerWidth - btnWidth);
                 randomY = Math.random() * (window.innerHeight - btnHeight);
                 
-                const padding = 20;
-                if (
-                    randomX < yesRect.right + padding &&
-                    randomX + btnWidth > yesRect.left - padding &&
-                    randomY < yesRect.bottom + padding &&
-                    randomY + btnHeight > yesRect.top - padding
-                ) {
-                    isOverlapping = true;
-                } else {
+                // Tránh nút Yes
+                const padding = 40;
+                if (!(randomX < yesRect.right + padding && 
+                      randomX + btnWidth > yesRect.left - padding && 
+                      randomY < yesRect.bottom + padding && 
+                      randomY + btnHeight > yesRect.top - padding)) {
                     isOverlapping = false;
                 }
             }
             
+            noBtn.style.transform = 'none';
             noBtn.style.left = `${randomX}px`;
             noBtn.style.top = `${randomY}px`;
+        }
+
+        // Hỗ trợ cả di chuột và chạm trên điện thoại
+        noBtn.addEventListener('mouseover', moveButton);
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            moveButton();
         });
 
         yesBtn.addEventListener('click', () => {
             noBtn.style.display = 'none';
             yesBtn.style.display = 'none';
-
             music.play();
-
             scrollWrapper.classList.add('scrolling');
         });
+
         scrollWrapper.addEventListener('animationiteration', () => {
             const intro = document.querySelector('.intro-section');
             if (intro) {
                 intro.remove(); 
-                
                 scrollWrapper.style.animation = 'none';
                 scrollWrapper.offsetHeight;
                 scrollWrapper.style.animation = 'scrollAnimation 191s linear infinite';
