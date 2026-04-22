@@ -21,7 +21,6 @@
             overflow: hidden;
             background-color: var(--bg-color);
             font-family: 'Baloo 2', sans-serif;
-            -webkit-touch-callout: none;
             -webkit-user-select: none;
             user-select: none;
         }
@@ -34,7 +33,6 @@
             will-change: transform;
         }
 
-        /* Responsive cho tiêu đề */
         h1 { 
             color: var(--text-color); 
             font-size: 1.5rem;
@@ -45,7 +43,6 @@
         }
         @media (min-width: 768px) { h1 { font-size: 2.5rem; } }
 
-        /* Responsive cho câu hỏi */
         .question { 
             color: var(--text-color); 
             font-size: 18px;
@@ -56,15 +53,13 @@
         }
         @media (min-width: 768px) { .question { font-size: 28px; } }
 
-        /* Responsive cho lyrics - CỰC KỲ QUAN TRỌNG để khớp nhịp */
         .lyric-line {
             color: var(--text-color);
             font-size: 16px;
             font-weight: 500;
-            line-height: 2.2;
-            margin: 8px 0;
+            line-height: 2.4;
+            margin: 10px 0;
             padding: 0 15px;
-            word-wrap: break-word;
         }
         @media (min-width: 768px) { .lyric-line { font-size: 24px; } }
 
@@ -75,18 +70,20 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding-bottom: 100px;
         }
 
-        .hearts { color: var(--secondary-color); font-size: 24px; margin-bottom: 15px; }
+        /* Thẻ giữ chỗ khi xóa Intro để Lyrics vẫn chạy từ dưới lên */
+        #spacer {
+            height: 100vh;
+            display: none;
+        }
 
         .lyrics-section {
             text-align: center;
             padding-top: 50px;
-            padding-bottom: 100vh;
+            padding-bottom: 100vh; /* Quan trọng: Giữ để cuộn hết chữ */
         }
 
-        /* Nút bấm cố định */
         .btn-style {
             position: fixed;
             top: 65%;
@@ -99,28 +96,27 @@
             background-color: #bdbdbd;
             box-shadow: inset -4px -4px 0px #757575, inset 4px 4px 0px #eeeeee;
             z-index: 1000;
-            touch-action: manipulation;
         }
 
-        #yes-btn {
-            left: 50%;
-            transform: translateX(-110%);
-        }
+        #yes-btn { left: 50%; transform: translateX(-110%); }
+        #no-btn { left: 50%; transform: translateX(10%); transition: 0.15s; }
 
-        #no-btn {
-            left: 50%;
-            transform: translateX(10%);
-            transition: left 0.15s ease, top 0.15s ease;
-        }
-
-        /* Animation cuộn */
         .scrolling {
             animation: scrollAnimation 191s linear infinite;
         }
 
+        /* Dùng PX thay vì % để chính xác tuyệt đối trên mọi thiết bị */
         @keyframes scrollAnimation {
             0% { transform: translateY(0); }
-            100% { transform: translateY(-85%); } /* Tăng lên để khớp nhịp trên mobile */
+            100% { transform: translateY(-3800px); } 
+        }
+
+        /* Responsive quãng đường cuộn cho máy tính (nếu cần) */
+        @media (min-width: 768px) {
+            @keyframes scrollAnimation {
+                0% { transform: translateY(0); }
+                100% { transform: translateY(-4200px); }
+            }
         }
 
         .pixel-decor { position: fixed; color: var(--secondary-color); font-size: 25px; pointer-events: none; z-index: 500;}
@@ -128,20 +124,15 @@
 </head>
 <body>
 
-    <div class="pixel-decor" style="top: 10%; left: 10%;">✦</div>
-    <div class="pixel-decor" style="bottom: 15%; right: 10%;">✦</div>
-
     <div id="scroll-wrapper">
-        <div class="intro-section">
-            <div class="hearts">♥    ♥    ♥    ♥    ♥</div>
+        <div id="spacer"></div> <div class="intro-section">
+            <div style="color: var(--secondary-color); font-size: 24px; margin-bottom: 15px;">♥ ♥ ♥ ♥ ♥</div>
             <h1>HI, WO DE XIAO BAO BEI!</h1>
-            <div class="question">
-                MP Sến Nhất Quả Đấttt<br>
-                :)) Chúpp bạn một ngày zuii
-            </div>
+            <div class="question">MP Sến Nhất Quả Đấttt<br>:)) Chúpp bạn một ngày zuii</div>
         </div>
 
         <div class="lyrics-section">
+            <div class="lyric-line">--- BẮT ĐẦU ---</div>
             <div class="lyric-line">Em lặng im còn anh thì ngồi ngẩn ngơ nhìn khuôn mặt ngây thơ đó</div>
             <div class="lyric-line">Em hững hờ quá nên anh lo sợ bơ vơ</div>
             <div class="lyric-line">Đợi chờ đôi mắt ngoan em ngại ngùng ngó sang</div>
@@ -213,72 +204,43 @@
             <div class="lyric-line">Làm người yêu anh nhé, baby</div>
             <div class="lyric-line">Rồi làm vợ anh nhé, baby, no, no, no</div>
             <div class="lyric-line">Ý em sao, ý em sao?</div>
-            <div class="lyric-line">--- Iu emm ---</div>
-            <br><br><br><br>
+            <br><br><br>
         </div>
     </div>
 
     <button id="yes-btn" class="btn-style">Dạaa</button>
     <button id="no-btn" class="btn-style">Ừ</button>
-
-    <audio id="bg-music" loop preload="auto">
-        <source src="LamNguoiYeuAnhNheBaby.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="bg-music" loop preload="auto"><source src="LamNguoiYeuAnhNheBaby.mp3" type="audio/mpeg"></audio>
 
     <script>
         const noBtn = document.getElementById('no-btn');
         const yesBtn = document.getElementById('yes-btn');
         const scrollWrapper = document.getElementById('scroll-wrapper');
         const music = document.getElementById('bg-music');
+        const spacer = document.getElementById('spacer');
 
         function moveButton() {
-            const btnWidth = noBtn.offsetWidth;
-            const btnHeight = noBtn.offsetHeight;
-            const yesRect = yesBtn.getBoundingClientRect();
-            
-            let randomX, randomY;
-            let isOverlapping = true;
-            
-            while(isOverlapping) {
-                randomX = Math.random() * (window.innerWidth - btnWidth);
-                randomY = Math.random() * (window.innerHeight - btnHeight);
-                
-                // Tránh nút Yes
-                const padding = 40;
-                if (!(randomX < yesRect.right + padding && 
-                      randomX + btnWidth > yesRect.left - padding && 
-                      randomY < yesRect.bottom + padding && 
-                      randomY + btnHeight > yesRect.top - padding)) {
-                    isOverlapping = false;
-                }
-            }
-            
-            noBtn.style.transform = 'none';
-            noBtn.style.left = `${randomX}px`;
-            noBtn.style.top = `${randomY}px`;
+            const maxX = window.innerWidth - noBtn.offsetWidth;
+            const maxY = window.innerHeight - noBtn.offsetHeight;
+            noBtn.style.left = `${Math.random() * maxX}px`;
+            noBtn.style.top = `${Math.random() * maxY}px`;
         }
 
-        // Hỗ trợ cả di chuột và chạm trên điện thoại
         noBtn.addEventListener('mouseover', moveButton);
-        noBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            moveButton();
-        });
+        noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveButton(); });
 
         yesBtn.addEventListener('click', () => {
-            noBtn.style.display = 'none';
-            yesBtn.style.display = 'none';
+            noBtn.style.display = 'none'; yesBtn.style.display = 'none';
             music.play();
             scrollWrapper.classList.add('scrolling');
         });
 
+        // Xử lý Loop: Thay Intro bằng Spacer để giữ Lyrics chạy từ dưới lên
         scrollWrapper.addEventListener('animationiteration', () => {
             const intro = document.querySelector('.intro-section');
             if (intro) {
                 intro.remove(); 
-                scrollWrapper.style.animation = 'none';
-                scrollWrapper.offsetHeight;
-                scrollWrapper.style.animation = 'scrollAnimation 191s linear infinite';
+                spacer.style.display = 'block'; // Hiện spacer cao 100vh để chiếm chỗ Intro cũ
             }
         });
     </script>
