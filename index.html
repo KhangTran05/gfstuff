@@ -244,32 +244,6 @@
             checkVolume(); // Kiểm tra âm lượng ngay khi bắt đầu
         });
 
-        // 3. KIỂM TRA RỜI TAB (Visibility API)
-        document.addEventListener("visibilitychange", () => {
-            if (!isStarted) return;
-
-            if (document.hidden) {
-                music.pause();
-                scrollWrapper.style.animationPlayState = 'paused'; // Dừng lyrics
-            } else {
-                music.play();
-                scrollWrapper.style.animationPlayState = 'running'; // Chạy tiếp
-            }
-        });
-
-        // 4. KIỂM TRA ÂM LƯỢNG (Volume Check)
-        function checkVolume() {
-            setInterval(() => {
-                if (!isStarted) return;
-                
-                // Nếu tắt tiếng hoặc âm lượng quá nhỏ (dưới 20%)
-                if (music.muted || music.volume < 0.5) {
-                    console.log("Loa nhỏ quá bạn ơiii!");
-                    // Bạn có thể hiện một cái alert hoặc dòng chữ nhắc nhở ở đây
-                }
-            }, 2000);
-        }
-
         // Sự kiện Loop
         scrollWrapper.addEventListener('animationiteration', () => {
             const intro = document.querySelector('.intro-section');
