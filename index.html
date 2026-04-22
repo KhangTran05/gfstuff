@@ -23,16 +23,13 @@
             font-family: 'Press Start 2P', cursive;
         }
 
-        /* Container chứa toàn bộ chữ để cuộn */
         #scroll-wrapper {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            /* Ẩn ban đầu, chỉ hiển thị sau khi bấm Yes */
         }
 
-        /* Phần câu hỏi ban đầu */
         .intro-section {
             height: 100vh;
             display: flex;
@@ -46,11 +43,10 @@
         h1 { color: var(--text-color); font-size: 2.5rem; margin: 10px 0; text-transform: uppercase; }
         .question { color: var(--text-color); font-size: 14px; line-height: 1.8; margin-bottom: 20px; }
 
-        /* Phần Lyrics */
         .lyrics-section {
             text-align: center;
             padding-top: 50px;
-            padding-bottom: 100vh; /* Tạo khoảng trống để cuộn hết chữ ra khỏi màn hình */
+            padding-bottom: 100vh;
         }
 
         .lyric-line {
@@ -60,12 +56,11 @@
             margin: 10px 0;
         }
 
-        /* Nút bấm thiết lập cố định hoàn toàn độc lập */
         #yes-btn {
             position: fixed;
             top: 60%;
             left: 50%;
-            transform: translate(-120%, 0); /* Đẩy nút sang trái một chút */
+            transform: translate(-120%, 0);
             padding: 15px 30px;
             font-family: 'Press Start 2P', cursive;
             font-size: 16px;
@@ -80,7 +75,7 @@
             position: fixed;
             top: 60%;
             left: 50%;
-            transform: translate(20%, 0); /* Đẩy nút sang phải một chút */
+            transform: translate(20%, 0);
             padding: 15px 30px;
             font-family: 'Press Start 2P', cursive;
             font-size: 16px;
@@ -92,14 +87,13 @@
             transition: left 0.1s ease, top 0.1s ease;
         }
 
-        /* Hiệu ứng cuộn lặp vô tận (Loop) */
         .scrolling {
-            animation: scrollAnimation 190s linear infinite; /* Thời gian cuộn 100 giây, bạn có thể chỉnh nhanh chậm ở đây */
+            animation: scrollAnimation 190s linear infinite;
         }
 
         @keyframes scrollAnimation {
             0% { transform: translateY(0); }
-            100% { transform: translateY(-100%); } /* Cuộn toàn bộ wrapper lên trên */
+            100% { transform: translateY(-100%); }
         }
 
         .pixel-decor { position: fixed; color: var(--secondary-color); font-size: 30px; pointer-events: none; z-index: 500;}
@@ -112,16 +106,16 @@
 
     <div id="scroll-wrapper">
         <div class="intro-section">
-            <div class="hearts">♥♥♥♥♥</div>
+            <div class="hearts">♥ ♥ ♥ ♥ ♥</div>
             <h1>HI, WO DE XIAO BAO BEI!</h1>
             <div class="question">
-                DO YOU WANT TO SEE A LITTLE<br>
-                SURPRISE I MADE FOR YOU?
+                MP Sến Nhất Quả Đấttt<br>
+                :)) Chúpp bạn một ngày zuii
             </div>
+            <div class="hearts">♥ ♥ ♥ ♥ ♥</div>
         </div>
 
         <div class="lyrics-section">
-            <div class="lyric-line">--- LYRICS ---</div>
             <div class="lyric-line">Em lặng im còn anh thì ngồi ngẩn ngơ nhìn khuôn mặt ngây thơ đó</div>
             <div class="lyric-line">Em hững hờ quá nên anh lo sợ bơ vơ</div>
             <div class="lyric-line">Đợi chờ đôi mắt ngoan em ngại ngùng ngó sang</div>
@@ -210,9 +204,7 @@
         const scrollWrapper = document.getElementById('scroll-wrapper');
         const music = document.getElementById('bg-music');
 
-        // Logic nút NO nhảy ngẫu nhiên (hoàn toàn không ảnh hưởng nút YES)
         noBtn.addEventListener('mouseover', () => {
-            // Xóa transform ban đầu để nút chạy tự do theo left/top
             noBtn.style.transform = 'none'; 
             
             const btnWidth = noBtn.offsetWidth*0.9;
@@ -222,12 +214,10 @@
             let randomX, randomY;
             let isOverlapping = true;
             
-            // Tìm vị trí mới cho nút No, đảm bảo không đè lên nút Yes
             while(isOverlapping) {
                 randomX = Math.random() * (window.innerWidth - btnWidth);
                 randomY = Math.random() * (window.innerHeight - btnHeight);
                 
-                // Giữ khoảng cách an toàn với nút Yes (20px)
                 const padding = 20;
                 if (
                     randomX < yesRect.right + padding &&
@@ -235,9 +225,9 @@
                     randomY < yesRect.bottom + padding &&
                     randomY + btnHeight > yesRect.top - padding
                 ) {
-                    isOverlapping = true; // Bị đè, phải tìm tọa độ khác
+                    isOverlapping = true;
                 } else {
-                    isOverlapping = false; // Tọa độ an toàn
+                    isOverlapping = false;
                 }
             }
             
@@ -245,16 +235,12 @@
             noBtn.style.top = `${randomY}px`;
         });
 
-        // Khi nhấn YES
         yesBtn.addEventListener('click', () => {
-            // Ẩn 2 nút đi
             noBtn.style.display = 'none';
             yesBtn.style.display = 'none';
 
-            // Phát nhạc (thuộc tính loop trong thẻ audio sẽ tự động lặp lại khi hết bài)
             music.play();
 
-            // Kích hoạt hiệu ứng kéo chữ lên
             scrollWrapper.classList.add('scrolling');
         });
     </script>
