@@ -221,37 +221,64 @@
         const music = document.getElementById('bg-music');
         const spacer = document.getElementById('spacer');
 
-        function moveButton() {
-            const btnWidth = noBtn.offsetWidth;
-            const btnHeight = noBtn.offsetHeight;
-            
-            // Giới hạn vùng nhảy chỉ ở nửa dưới màn hình để tránh đè chữ
-            const minY = window.innerHeight * 0.5; 
-            const maxY = window.innerHeight - btnHeight - 20;
-            const maxX = window.innerWidth - btnWidth - 20;
-            
-            let randomX = Math.random() * maxX;
-            let randomY = minY + Math.random() * (maxY - minY);
-            
-            noBtn.style.left = `${randomX}px`;
-            noBtn.style.top = `${randomY}px`;
-        }
+        let isStarted = false;
 
+        // 1. Hàm di chuyển nút No
+        function moveButton() {
+            const minY = window.innerHeight * 0.5; 
+            const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+            const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+            noBtn.style.left = `${Math.random() * maxX}px`;
+            noBtn.style.top = `${minY + Math.random() * (maxY - minY)}px`;
+        }
         noBtn.addEventListener('mouseover', moveButton);
         noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveButton(); });
 
+        // 2. Logic khi nhấn YES
         yesBtn.addEventListener('click', () => {
-            noBtn.style.display = 'none'; yesBtn.style.display = 'none';
+            noBtn.style.display = 'none';
+            yesBtn.style.display = 'none';
             music.play();
             scrollWrapper.classList.add('scrolling');
+            isStarted = true;
+            checkVolume(); // Kiểm tra âm lượng ngay khi bắt đầu
         });
 
-        // Xử lý Loop: Thay Intro bằng Spacer để giữ Lyrics chạy từ dưới lên
+        // 3. KIỂM TRA RỜI TAB (Visibility API)
+        document.addEventListener("visibilitychange", () => {
+            if (!isStarted) return;
+
+            if (document.hidden) {
+                music.pause();
+                scrollWrapper.style.animationPlayState = 'paused'; // Dừng lyrics
+            } else {
+                music.play();
+                scrollWrapper.style.animationPlayState = 'running'; // Chạy tiếp
+            }
+        });
+
+        // 4. KIỂM TRA ÂM LƯỢNG (Volume Check)
+        function checkVolume() {
+            setInterval(() => {
+                if (!isStarted) return;
+                
+                // Nếu tắt tiếng hoặc âm lượng quá nhỏ (dưới 20%)
+                if (music.muted || music.volume < 0.5) {
+                    console.log("Loa nhỏ quá bạn ơiii!");
+                    // Bạn có thể hiện một cái alert hoặc dòng chữ nhắc nhở ở đây
+                }
+            }, 2000);
+        }
+
+        // Sự kiện Loop
         scrollWrapper.addEventListener('animationiteration', () => {
             const intro = document.querySelector('.intro-section');
             if (intro) {
                 intro.remove(); 
-                spacer.style.display = 'block'; // Hiện spacer cao 100vh để chiếm chỗ Intro cũ
+                spacer.style.display = 'block';
+                scrollWrapper.style.animation = 'none';
+                scrollWrapper.offsetHeight;
+                scrollWrapper.style.animation = 'scrollAnimation 191s linear infinite';
             }
         });
     </script>
