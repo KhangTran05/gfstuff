@@ -201,7 +201,7 @@
     <button id="no-btn">No</button>
 
     <audio id="bg-music" loop>
-        <source src=":amNguoiYeuAnhNheBaby.mp3" type="audio/mpeg">
+        <source src="LamNguoiYeuAnhNheBaby.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -215,8 +215,8 @@
             // Xóa transform ban đầu để nút chạy tự do theo left/top
             noBtn.style.transform = 'none'; 
             
-            const btnWidth = noBtn.offsetWidth;
-            const btnHeight = noBtn.offsetHeight;
+            const btnWidth = noBtn.offsetWidth*0.9;
+            const btnHeight = noBtn.offsetHeight*0.9;
             const yesRect = yesBtn.getBoundingClientRect();
             
             let randomX, randomY;
